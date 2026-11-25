@@ -1,100 +1,1002 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Global Skill Passport</title>
-<style>
-:root{--bg:#f7f5f0;--card:#fff;--tx:#1d2a26;--mu:#5d6b66;--br:#dcd8cd;--ac:#0b7a5c;--ac2:#e8f4ef;--wa:#b36b00;--wb:#fff3dc;--rd:#a33;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--card:#1b2420;--tx:#e9efec;--mu:#9bada6;--br:#2f3b36;--ac:#3fc59a;--ac2:#163328;--wa:#f0b04a;--wb:#35290f;--rd:#f08080;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#121816;--card:#1b2420;--tx:#e9efec;--mu:#9bada6;--br:#2f3b36;--ac:#3fc59a;--ac2:#163328;--wa:#f0b04a;--wb:#35290f;--rd:#f08080;color-scheme:dark}
-*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--card);border-bottom:1px solid var(--br);z-index:5}
-.in{max-width:1000px;margin:0 auto;padding:12px 16px}
-.logo{font-weight:800;font-size:18px}.logo span{color:var(--ac)}
-nav{display:flex;gap:6px;overflow-x:auto;margin-top:8px}
-nav button{white-space:nowrap}
-button,select,input,textarea{font:inherit;color:var(--tx)}
-button{border:1px solid var(--br);background:var(--card);padding:8px 14px;border-radius:8px;cursor:pointer}
-button.on,button.pri{background:var(--ac);color:var(--bg);border-color:var(--ac)}
-body.dk button.on{color:#000}
-input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--br);border-radius:8px;background:var(--bg)}
-label{font-size:13px;color:var(--mu);display:block;margin:10px 0 4px}
-main{max-width:1000px;margin:0 auto;padding:16px}
-.card{background:var(--card);border:1px solid var(--br);border-radius:12px;padding:16px;margin-bottom:14px}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-h1{font-size:28px;line-height:1.2;margin:.2em 0}h2{margin:.2em 0 .5em;font-size:20px}h3{margin:.2em 0;font-size:16px}
-.mu{color:var(--mu);font-size:14px}
-.chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;margin:2px 4px 2px 0;background:var(--ac2);color:var(--ac);border:1px solid var(--br)}
-.chip.w{background:var(--wb);color:var(--wa)}.chip.p{background:var(--bg);color:var(--mu)}
-.bar{height:10px;background:var(--bg);border:1px solid var(--br);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac)}.bar i.w{background:var(--wa)}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.row>*{flex:0 1 auto}
-.big{font-size:34px;font-weight:800;color:var(--ac)}
-.stage{display:flex;gap:4px;margin:8px 0}.stage div{flex:1;height:6px;border-radius:3px;background:var(--br)}.stage div.d{background:var(--ac)}
-.ev{border-left:4px solid var(--ac);padding:6px 10px;margin:8px 0;background:var(--ac2);border-radius:0 8px 8px 0}.ev.u{border-color:var(--wa);background:var(--wb)}
-.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid var(--br);padding:6px;text-align:left}
-.hero{background:var(--ac2)}
-@media(max-width:520px){h1{font-size:23px}}
-</style></head><body>
-<header><div class="in"><div class="logo">🛂 Global <span>Skill Passport</span></div>
-<nav id="nav"></nav></div></header>
-<main id="app"></main>
-<script>
-var ROLES={'Frontend Developer':['JavaScript','React','HTML/CSS','Git','Accessibility'],'Backend Developer':['Python','APIs','SQL','Git','Testing'],'Data Analyst':['SQL','Python','Excel','Data Viz','Statistics'],'Digital Marketing Specialist':['SEO','Analytics','Content','Social Media','Excel']};
-var CHK=['Identity document on file (or UNHCR/ID alternative)','Payment pathway set (mobile money, digital wallet or bank)','Remote-contract work eligibility confirmed','Contract and tax basics reviewed','Reliable device and connectivity plan'];
-var VIEWS=[['home','Home'],['eval','Evaluator'],['pass','Passport'],['talent','Talent Explorer']];
-function P(id,name,origin,role,langs,skills,ev,br,comp,shared,note){return{id:id,name:name,origin:origin,base:'Kakuma, Kenya (remote-ready)',role:role,langs:langs,skills:skills.map(function(s){return{n:s[0],v:s[1]}}),ev:ev.map(function(e){return{t:e[0],type:e[1],pts:e[2],ver:e[3],how:e[4]}}),br:br,comp:comp,shared:shared,note:note,intro:false}}
-var S=[
-P('a','Amina H.','Damascus-trained software engineer','Frontend Developer',['Arabic','English'],[['JavaScript',1],['React',1],['HTML/CSS',1],['Git',1],['Accessibility',0]],[['Arabic-RTL job board (React)','Repo + live demo',25,1,'Code reviewed against PLP rubric v2 by 2 partner mentors'],['Open-source PR to a UI library','Repo contribution',20,1,'Merged PR verified via commit history'],['BSc Computer Science (Syria), transcript unavailable','Credential claim',15,0,'No documents; use skills-based route']],['Take the accessibility practical assessment','Add a verified employer reference after first micro-contract'],[1,1,1,0,1],1,'Credential papers lost; competence proven through shipped work.'),
-P('b','Yonas T.','Eritrean-born data analyst','Data Analyst',['Tigrinya','English','Arabic'],[['SQL',1],['Python',1],['Excel',1],['Data Viz',0],['Statistics',0]],[['Clinic attendance dashboard case study','Practical case study',25,1,'Rubric scored 4/5 on method, reproducibility, insight'],['Python notebook on refugee-camp food prices','Repo',15,0,'Awaiting reviewer'],['Self-reported: 4 yrs analyst at NGO','Experience claim',15,0,'Reference not yet collected']],['Complete a recognised statistics micro-credential (bridging)','Request NGO reference letter'],[1,1,0,1,1],1,'Strong analysis; needs formal stats bridging.'),
-P('c','Layla M.','Iraqi digital marketer','Digital Marketing Specialist',['Arabic','Kurdish','English'],[['SEO',1],['Analytics',1],['Content',0],['Social Media',1],['Excel',0]],[['SEO audit for a Nairobi SME','Client case study',25,1,'Client confirmation plus rubric review'],['Content calendar portfolio','Portfolio',15,0,'Self-hosted, unverified']],['Google Analytics certification (bridging)','Collect second client reference'],[1,0,1,1,1],1,'Local-market client work gives Kenyan experience.'),
-P('d','Samuel K.','South Sudanese backend developer','Backend Developer',['English','Arabic','Dinka'],[['Python',1],['APIs',1],['SQL',0],['Git',1],['Testing',0]],[['Mobile-money payments API (Python)','Repo + tests',25,1,'Tests run in sandbox; rubric passed'],['Diploma in IT, scanned copy only','Credential claim',15,0,'Needs issuer verification']],['Add SQL practical test','Add automated tests to 2 more repos'],[1,1,1,1,0],0,'Private by default until he chooses to share.')];
-var st={v:'home',pid:'a',res:null};
-try{var sv=JSON.parse(localStorage.getItem('gsp'));if(sv)S.forEach(function(p){if(sv[p.id]){p.shared=sv[p.id].shared;p.comp=sv[p.id].comp}})}catch(e){}
-function save(){try{var o={};S.forEach(function(p){o[p.id]={shared:p.shared,comp:p.comp}});localStorage.setItem('gsp',JSON.stringify(o))}catch(e){}}
-function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function sc(p){var v=0,u=0;p.ev.forEach(function(e){e.ver?v+=e.pts:u+=e.pts});var evs=Math.min(100,Math.round(v+.3*u));var nv=p.skills.filter(function(s){return s.v}).length;var rd=Math.round(p.comp.filter(Boolean).length/CHK.length*100);var req=ROLES[p.role]||[];var fit=req.length?Math.round(req.filter(function(r){return p.skills.some(function(s){return s.n===r&&s.v})}).length/req.length*100):0;var idx=Math.round(.5*evs+.25*rd+.25*fit);var stg=[evs>=40,rd>=80,fit>=60];stg.push(stg[0]&&stg[1]&&stg[2]);return{v:v,u:u,evs:evs,nv:nv,rd:rd,fit:fit,idx:idx,stg:stg,ratio:p.skills.length?Math.round(nv/p.skills.length*100):0}}
-function bar(l,n,w){return '<div class="mu" style="margin-top:8px">'+l+' <b>'+n+'%</b></div><div class="bar"><i class="'+(w||'')+'" style="width:'+n+'%"></i></div>'}
-function go(v){st.v=v;render();window.scrollTo(0,0)}
-function render(){document.getElementById('nav').innerHTML=VIEWS.map(function(x){return '<button class="'+(st.v===x[0]?'on':'')+'" onclick="go(\''+x[0]+'\')">'+x[1]+'</button>'}).join('');document.getElementById('app').innerHTML=({home:home,eval:evalV,pass:passV,talent:talentV})[st.v]()}
-function home(){var all=S.map(sc),n=S.length,sh=S.filter(function(p){return p.shared}).length,avg=Math.round(all.reduce(function(a,b){return a+b.idx},0)/n),pl=all.filter(function(x){return x.stg[3]}).length;
-var steps=['Submit real work: repos, case studies, projects','Rubric check: auto-checks, then partner reviewers verify','Bridge gaps: micro-credentials, assessments, references','Get compliance-ready: ID, payment, contract, eligibility','Share passport (opt-in) and get matched to roles'];
-return '<div class="card hero"><span class="chip">PLP × ILO Mini-Hackathon · Track 1 · SDG 4 &amp; 8</span><h1>Skills speak when paperwork can’t.</h1><p>Skilled refugees lose years to brain waste because degrees and documents go missing. Global Skill Passport turns real projects into verified, shareable evidence, clearly separated from self-reported claims, and maps it to compliance readiness and real employer roles.</p><div class="row"><button class="pri" onclick="go(\'eval\')">Test the Evaluator</button><button onclick="go(\'pass\')">View a Passport</button><button onclick="go(\'talent\')">Explore Talent</button></div></div>'+
-'<div class="grid"><div class="card"><h2>How it works</h2>'+steps.map(function(s,i){return '<p><b>'+(i+1)+'.</b> '+s+'</p>'}).join('')+'</div><div class="card"><h2>Measurable impact (live from data)</h2><div class="big">'+pl+'/'+n+'</div><div class="mu">candidates at full pipeline stage (validated, compliant, role-matched)</div>'+bar('Average Passport Index',avg)+bar('Passports shared by choice',Math.round(sh/n*100))+'<p class="mu">SDG 8: pathway from validated skill to remote or local work. SDG 4: bridging steps show targeted upskilling.</p></div></div>'+
-'<div class="card"><h2>Built to scale</h2><p class="mu">Rubrics are plain configuration (role → required skills, evidence type → points), so new cohorts, sectors and regions add a rubric, not manual review. Auto-checks screen submissions; partner reviewers only confirm what passes. Evidence is always labelled Verified, Provisional or Self-reported.</p></div>'}
-function evalV(){var p=S.find(function(x){return x.id===st.pid})||S[0];
-return '<div class="grid"><div class="card"><h2>Evaluate a sample profile</h2><label>Sample candidate</label><select id="sp" onchange="st.pid=this.value">'+S.map(function(x){return '<option value="'+x.id+'"'+(x.id===st.pid?' selected':'')+'>'+esc(x.name)+' — '+esc(x.role)+'</option>'}).join('')+'</select><p><button class="pri" onclick="runS()">Run evaluation</button></p><p class="mu">Scoring: verified evidence counts fully; provisional (unreviewed) counts 30%; self-reported claims count only as listed skills.</p></div>'+
-'<div class="card"><h2>Submit a new project</h2><form onsubmit="return runN(event)"><label>Your name</label><input id="nn" required maxlength="40"><label>Target role</label><select id="nr">'+Object.keys(ROLES).map(function(r){return '<option>'+r+'</option>'}).join('')+'</select><label>Skills you claim (comma separated)</label><input id="ns" placeholder="Python, SQL, Git"><label>Languages (comma separated)</label><input id="nl" placeholder="Arabic, English"><label>Project / repo link</label><input id="nk" placeholder="https://github.com/you/project"><label>Case study or project note</label><textarea id="nt" rows="3" placeholder="What you built, tools used, tests, results, your role"></textarea><p><button class="pri" type="submit">Evaluate and create private passport</button></p></form></div></div><div id="out">'+(st.res?result(st.res):'')+'</div>'}
-function runS(){st.res=st.pid;document.getElementById('out').innerHTML=result(st.pid)}
-function runN(e){e.preventDefault();var g=function(i){return document.getElementById(i).value.trim()},link=g('nk'),note=g('nt'),checks=[],pts=0;
-function ck(ok,l,w){checks.push([ok,l,w]);if(ok)pts+=w}
-var okUrl=/^https?:\/\/[^\s]+\.[^\s]+/.test(link),repo=/^https:\/\/(www\.)?(github|gitlab|bitbucket)\.(com|org)\//.test(link);
-ck(okUrl,'Valid project link provided',10);ck(repo,'Link is on a recognised code host',10);ck(note.length>=60,'Case-study note has enough detail (60+ characters)',10);ck(/test|spec|ci\b/i.test(note),'Mentions testing',10);ck(/demo|live|deploy|users?|client/i.test(note),'Mentions deployment, users or a client',10);ck(/readme|document/i.test(note),'Mentions documentation',10);
-var sk=g('ns').split(',').map(function(s){return s.trim()}).filter(Boolean).slice(0,12),role=g('nr');
-var id='n'+Date.now();var p=P(id,esc(g('nn')),'Self-submitted profile',role,g('nl').split(',').map(function(s){return esc(s.trim())}).filter(Boolean),sk.map(function(s){return[esc(s),0]}),[[okUrl?esc(link.slice(0,60)):'Project note (no valid link)',repo?'Repo (auto-checked)':'Project note',pts,0,'Provisional: awaiting partner reviewer']],[],[0,0,0,0,0],0,'');
-var req=ROLES[role]||[];p.br=req.filter(function(r){return !sk.some(function(s){return s.toLowerCase()===r.toLowerCase()})}).map(function(r){return 'Skills gap for '+role+': take a practical assessment in '+r});
-p.br.push('Submit to a partner reviewer to convert provisional evidence into verified');p.br.push('No degree papers? Use skills-based validation or the UNESCO Qualifications Passport as a bridge');p.checks=checks;S.push(p);st.pid=id;st.res=id;save();document.getElementById('out').innerHTML=result(id);document.getElementById('out').scrollIntoView();return false}
-function result(id){var p=S.find(function(x){return x.id===id});if(!p)return '';var s=sc(p);var miss=(ROLES[p.role]||[]).filter(function(r){return !p.skills.some(function(k){return k.n===r&&k.v})});
-return '<div class="card"><h2>Evaluation: '+p.name+'</h2><div class="grid"><div><div class="big">'+s.evs+'</div><div class="mu">Evidence score (0–100)</div>'+bar('Verified evidence points',Math.min(100,s.v))+bar('Provisional / self-reported points',Math.min(100,s.u),'w')+bar('Skills verified',s.ratio)+'</div><div>'+bar('Compliance readiness',s.rd)+bar('Market fit for '+esc(p.role),s.fit)+bar('Passport Index',s.idx)+'</div></div>'+
-(p.checks?'<h3>Auto-check results</h3>'+p.checks.map(function(c){return '<div>'+(c[0]?'✅':'⬜')+' '+c[1]+' <span class="mu">(+'+c[2]+')</span></div>'}).join(''):'')+
-'<h3 style="margin-top:12px">Evidence</h3>'+p.ev.map(evH).join('')+'<h3>Bridging and re-certification</h3>'+(p.br.map(function(b){return '<div>➡️ '+esc(b)+'</div>'}).join(''))+'<h3 style="margin-top:12px">Compliance and market notes</h3><div class="mu">'+(s.rd>=80?'Ready for remote or contract onboarding.':'Complete the checklist before placement: '+CHK.filter(function(c,i){return !p.comp[i]}).map(function(c){return c.split(' (')[0].toLowerCase()}).join('; ')+'.')+' '+(miss.length?'To match '+esc(p.role)+' roles, verify: '+miss.join(', ')+'.':'All core skills for this role are verified.')+'</div><p><button class="pri" onclick="st.pid=\''+p.id+'\';go(\'pass\')">Open passport</button></p></div>'}
-function evH(e){return '<div class="ev'+(e.ver?'':' u')+'"><b>'+e.t+'</b> <span class="chip'+(e.ver?'':' w')+'">'+(e.ver?'Verified':'Unverified')+'</span><span class="chip p">'+e.type+' · '+e.pts+' pts</span><div class="mu">'+e.how+'</div></div>'}
-function passV(){var p=S.find(function(x){return x.id===st.pid})||S[0],s=sc(p);
-return '<div class="card"><label>Choose passport</label><select onchange="st.pid=this.value;render()">'+S.map(function(x){return '<option value="'+x.id+'"'+(x.id===p.id?' selected':'')+'>'+x.name+(x.shared?'':' (private)')+'</option>'}).join('')+'</select></div>'+
-'<div class="card"><div class="row" style="justify-content:space-between"><div><h2>🛂 '+p.name+'</h2><div class="mu">'+esc(p.origin)+' · '+p.base+'<br>Target: <b>'+esc(p.role)+'</b> · '+(p.langs.join(', ')||'n/a')+'</div></div><div><span class="chip'+(p.shared?'':' w')+'">'+(p.shared?'🌍 Shared: discoverable':'🔒 Private: only you can see this')+'</span><p><button class="'+(p.shared?'':'pri')+'" onclick="tog(\''+p.id+'\')">'+(p.shared?'Make private':'Share with employers')+'</button></p></div></div>'+(p.note?'<p class="mu">'+p.note+'</p>':'')+'</div>'+
-'<div class="grid"><div class="card"><h2>Skills</h2><h3>Verified</h3>'+(p.skills.filter(function(k){return k.v}).map(function(k){return '<span class="chip">✔ '+esc(k.n)+'</span>'}).join('')||'<span class="mu">None yet</span>')+'<h3>Self-reported</h3>'+(p.skills.filter(function(k){return !k.v}).map(function(k){return '<span class="chip w">'+esc(k.n)+'</span>'}).join('')||'<span class="mu">None</span>')+'<h2 style="margin-top:14px">Score breakdown</h2><div class="big">'+s.idx+'</div>'+bar('Evidence score',s.evs)+bar('Compliance readiness',s.rd)+bar('Market fit',s.fit)+'</div>'+
-'<div class="card"><h2>Portfolio evidence</h2>'+p.ev.map(evH).join('')+'<h2>Bridging steps</h2>'+p.br.map(function(b){return '<div>➡️ '+esc(b)+'</div>'}).join('')+'</div></div>'+
-'<div class="card"><h2>Compliance checklist <span class="mu">(self-attested, tap to update)</span></h2>'+CHK.map(function(c,i){return '<div><label style="display:flex;gap:8px;align-items:center;margin:4px 0;color:var(--tx);font-size:15px"><input type="checkbox" style="width:auto" '+(p.comp[i]?'checked':'')+' onchange="chk(\''+p.id+'\','+i+',this.checked)">'+c+'</label></div>'}).join('')+'</div>'}
-function tog(id){var p=S.find(function(x){return x.id===id});p.shared=!p.shared;save();render()}
-function chk(id,i,v){var p=S.find(function(x){return x.id===id});p.comp[i]=v?1:0;save();render()}
-var F={q:'',sk:'',ro:'',la:'',min:0};
-function talentV(){var sk={},la={};S.forEach(function(p){p.skills.forEach(function(k){if(k.v)sk[k.n]=1});p.langs.forEach(function(l){la[l]=1})});
-var opt=function(o,v,l){return '<option value="">'+l+'</option>'+Object.keys(o).sort().map(function(k){return '<option'+(k===v?' selected':'')+'>'+k+'</option>'}).join('')};
-return '<div class="card"><h2>Talent Explorer</h2><p class="mu">Only passports their owners chose to share appear here. Private ones stay hidden.</p><div class="grid"><div><label>Search name or role</label><input id="fq" value="'+esc(F.q)+'" oninput="F.q=this.value;list()"></div><div><label>Verified skill</label><select onchange="F.sk=this.value;list()">'+opt(sk,F.sk,'Any')+'</select></div><div><label>Target role</label><select onchange="F.ro=this.value;list()">'+opt(ROLES,F.ro,'Any')+'</select></div><div><label>Language</label><select onchange="F.la=this.value;list()">'+opt(la,F.la,'Any')+'</select></div><div><label>Min Passport Index: <b id="mv">'+F.min+'</b></label><input type="range" min="0" max="100" step="5" value="'+F.min+'" oninput="F.min=+this.value;document.getElementById(\'mv\').textContent=this.value;list()"></div></div></div><div id="lst">'+cards()+'</div>'}
-function list(){document.getElementById('lst').innerHTML=cards()}
-function cards(){var r=S.filter(function(p){var q=F.q.toLowerCase();return p.shared&&(!q||(p.name+' '+p.role).toLowerCase().indexOf(q)>-1)&&(!F.sk||p.skills.some(function(k){return k.v&&k.n===F.sk}))&&(!F.ro||p.role===F.ro)&&(!F.la||p.langs.indexOf(F.la)>-1)&&sc(p).idx>=F.min});
-if(!r.length)return '<div class="card mu">No shared passports match these filters.</div>';
-var L=['Skills validated','Compliance ready','Role matched','Interview-ready'];
-return '<div class="grid">'+r.map(function(p){var s=sc(p);return '<div class="card"><h3>'+p.name+' <span class="chip">'+s.idx+' index</span></h3><div class="mu">'+esc(p.role)+' · '+p.langs.join(', ')+'</div><div style="margin:6px 0">'+p.skills.filter(function(k){return k.v}).map(function(k){return '<span class="chip">✔ '+esc(k.n)+'</span>'}).join('')+'</div><div class="stage">'+s.stg.map(function(d){return '<div class="'+(d?'d':'')+'"></div>'}).join('')+'</div><div class="mu">Pipeline: '+(L.filter(function(l,i){return s.stg[i]}).join(' → ')||'Getting started')+'</div><div class="mu">Opportunity: '+(s.stg[3]?'remote or local contract ready':s.stg[0]?'close, finish bridging steps':'building evidence')+'</div><p class="row"><button class="'+(p.intro?'on':'')+'" onclick="intro(\''+p.id+'\')">'+(p.intro?'✓ Intro requested':'Request intro')+'</button><button onclick="st.pid=\''+p.id+'\';go(\'pass\')">View passport</button></p></div>'}).join('')+'</div>'}
-function intro(id){var p=S.find(function(x){return x.id===id});p.intro=!p.intro;list()}
-render();
-</script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Global Skill Passport</title>
+  <style>
+    :root {
+      --bg: #f6f3ec;
+      --card: #ffffff;
+      --tx: #14221d;
+      --mu: #566660;
+      --br: #ddd7c8;
+      --ac: #085c48;
+      --ac2: #e4f2ec;
+      --ac3: #103b32;
+      --wa: #9a5b00;
+      --wb: #fff2d6;
+      --gold: #d98a1c;
+      --goldb: #fff3de;
+      --r: 14px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0e1412;
+        --card: #17201c;
+        --tx: #ecf2ef;
+        --mu: #9baba5;
+        --br: #2b3833;
+        --ac: #37c296;
+        --ac2: #142f25;
+        --ac3: #1c473b;
+        --wa: #f2b44b;
+        --wb: #33260c;
+        --gold: #e69d2e;
+        --goldb: #36270e;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--tx);
+      font: 15px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--card);
+      border-bottom: 1px solid var(--br);
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 12px 16px; }
+    .top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 17px; }
+    .brand-dot {
+      width: 24px; height: 24px; border-radius: 7px;
+      background: var(--ac); color: #fff;
+      display: inline-flex; align-items: center; justify-content: center; font-size: 13px;
+    }
+    nav { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    button, input, select, textarea {
+      font: inherit; color: var(--tx); border-radius: 10px; border: 1px solid var(--br);
+    }
+    button { background: var(--card); padding: 8px 13px; cursor: pointer; font-weight: 600; }
+    button.on, button.pri { background: var(--ac); color: #fff; border-color: var(--ac); }
+    button.gold { background: var(--gold); color: #fff; border-color: var(--gold); }
+    @media (prefers-color-scheme: dark) {
+      button.on, button.pri, button.gold { color: #091310; }
+    }
+    input, select, textarea { width: 100%; padding: 9px 11px; background: var(--bg); }
+    label { display: block; font-size: 12.5px; color: var(--mu); margin: 10px 0 4px; font-weight: 600; }
+    .card {
+      background: var(--card); border: 1px solid var(--br);
+      border-radius: var(--r); padding: 18px; margin-bottom: 14px;
+    }
+    .hero-banner {
+      background: linear-gradient(120deg, var(--ac3), var(--ac));
+      color: #fff; border-radius: 16px; padding: 24px; margin-bottom: 16px;
+    }
+    .hero-banner .mu { color: #d5ece4; }
+    .hero-card {
+      background: #fff; color: #14221d; border-radius: 14px; padding: 16px;
+      border: 1px solid rgba(255,255,255,.25);
+    }
+    .grid2 { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+    .grid3 { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    h1 { margin: 8px 0; font-size: 30px; line-height: 1.18; }
+    h2 { margin: 0 0 8px; font-size: 19px; }
+    h3 { margin: 0 0 6px; font-size: 16px; }
+    .mu { color: var(--mu); font-size: 13.5px; }
+    .num { font-size: 30px; font-weight: 800; color: var(--ac); line-height: 1.1; }
+    .pill {
+      display: inline-block; font-size: 11.5px; padding: 3px 10px;
+      border-radius: 999px; margin: 2px 4px 2px 0;
+      background: var(--ac2); color: var(--ac); border: 1px solid var(--br); font-weight: 600;
+    }
+    .pill.w { background: var(--wb); color: var(--wa); }
+    .pill.g { background: var(--goldb); color: var(--wa); }
+    .two-box { border-radius: 12px; padding: 14px; border: 1px solid var(--br); }
+    .two-box.v { background: var(--ac2); border-color: #9ad1bb; }
+    .two-box.s { background: var(--goldb); border-color: #ecc88b; }
+    .score-ring {
+      width: 50px; height: 50px; border-radius: 999px;
+      border: 4px solid var(--ac); display: inline-flex;
+      align-items: center; justify-content: center; font-weight: 800; font-size: 16px;
+      flex-shrink: 0;
+    }
+    .avatar {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: var(--ac2); color: var(--ac); border: 1px solid var(--br);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 13px; flex-shrink: 0;
+    }
+    .bar { height: 8px; background: var(--bg); border-radius: 999px; overflow: hidden; border: 1px solid var(--br); }
+    .bar > i { display: block; height: 100%; background: var(--ac); }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .quote {
+      border-left: 3px solid var(--ac); padding-left: 10px;
+      margin-top: 6px; color: var(--mu); font-size: 13px;
+    }
+    .passport-banner {
+      background: linear-gradient(125deg, var(--ac3), var(--ac));
+      color: #fff; border-radius: 14px; padding: 20px; margin-bottom: 14px;
+    }
+    .passport-banner .mu { color: #d6ece4; }
+    .passport-banner .ring-light {
+      width: 58px; height: 58px; border-radius: 999px;
+      border: 4px solid #63e2b7; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; font-weight: 800; font-size: 18px;
+    }
+    .foot-note {
+      border-top: 1px solid var(--br); margin-top: 24px; padding-top: 14px;
+      font-size: 12.5px; color: var(--mu);
+    }
+    @media print {
+      header, nav, .no-print { display: none !important; }
+      body { background: #fff; color: #000; }
+      .card, .passport-banner { border: 1px solid #ccc; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="no-print">
+    <div class="wrap">
+      <div class="top">
+        <div class="brand"><span class="brand-dot">◎</span> Global Skill Passport</div>
+        <span class="pill">25 Nov 2026 · Skills &amp; Evidence</span>
+      </div>
+      <nav id="nav"></nav>
+    </div>
+  </header>
+
+  <main class="wrap" id="view"></main>
+
+  <footer class="wrap foot-note no-print">
+    Global Skill Passport shows evidence of practical skill. It is not a degree, licence or identity document. Sample profiles are fictional.
+  </footer>
+
+  <script>
+    var PROFILES = [
+      {
+        id: "amina",
+        code: "GSP-3EY2-EU5E",
+        initials: "AY",
+        name: "Amina Yusuf",
+        role: "Frontend Developer",
+        location: "Kakuma, Kenya",
+        country: "Kenya",
+        langs: ["Somali", "Swahili", "English", "Arabic"],
+        exp: "4 years",
+        issued: "25 Nov 2026",
+        score: 92,
+        levelLabel: "Strong evidence",
+        compliance: 94,
+        complianceStatus: "Ready to hire and pay",
+        roleMatch: "100% role match",
+        shared: 0,
+        bio: "Self-taught web developer. I studied computer science for two years in Mogadishu before displacement and my transcripts could not be recovered. I have built websites and tools for community organisations since 2021 and want a remote frontend role. I also know some Python and Docker.",
+        verifiedSkills: [
+          ["TypeScript", "Advanced", "Software · Repository + project", "TypeScript makes up 80% of the code in amina-yusuf/clinic-queue", "Built a React and TypeScript web app that lets a camp health clinic register patients and manage the waiting queue on low-cost Android tablets. — Clinic Queue: offline-first patient queue"],
+          ["Offline-First & Low-Bandwidth Design", "Advanced", "Software · Repository + project", "Referenced in the README or topics of amina-yusuf/clinic-queue", "The app works offline-first as a PWA and syncs when connectivity returns. — Clinic Queue: offline-first patient queue"],
+          ["HTML & CSS", "Advanced", "Software · Repository + project", "HTML + CSS makes up 15% of the code in amina-yusuf/clinic-queue", "Designed a responsive layout with Tailwind CSS and tested it with 6 nurses. — Clinic Queue: offline-first patient queue"],
+          ["React", "Proficient", "Software · Repository + project", "Referenced in the README or topics of amina-yusuf/clinic-queue", "Built a React and TypeScript web app that lets a camp health clinic register patients and manage the waiting queue on low-cost Android tablets. — Clinic Queue: offline-first patient queue"],
+          ["JavaScript", "Proficient", "Software · Repository + project", "JavaScript makes up 5% of the code in amina-yusuf/clinic-queue", "Designed and built a JavaScript site with a small REST API so 40 traders can post daily prices by SMS. — Kakuma market prices board"],
+          ["Version Control & Code Review", "Working", "Software · Project case study", "Verified from case study workflow", "Reviewed pull requests on GitHub for a team of 3. — Kakuma market prices board"],
+          ["Team Leadership & Training", "Working", "Professional · Project case study", "Verified from case study workflow", "Trained 2 volunteers to maintain it and wrote the documentation in Swahili and English. — Kakuma market prices board"],
+          ["API Design", "Working", "Software · Project case study", "Verified from case study workflow", "Designed and built a JavaScript site with a small REST API so 40 traders can post daily prices by SMS. — Kakuma market prices board"],
+          ["Reports & Documentation", "Working", "Professional · Project case study", "Verified from case study workflow", "Trained 2 volunteers to maintain it and wrote the documentation in Swahili and English. — Kakuma market prices board"],
+          ["Software Testing", "Foundational", "Software · Repository", "Referenced in the README or topics of amina-yusuf/clinic-queue", "Tested workflows with clinic staff across offline and online transitions."],
+          ["Accessibility", "Foundational", "Software · Repository", "Referenced in the README or topics of amina-yusuf/clinic-queue", "Readable tablet layout designed for quick clinic use."]
+        ],
+        selfReportedSkills: ["Python", "Cloud & DevOps"],
+        projects: [
+          {
+            title: "Clinic Queue: offline-first patient queue",
+            detailTag: "Strong detail",
+            summary: "Built a React and TypeScript web app that lets a camp health clinic register patients and manage the waiting queue on low-cost Android tablets. The app works offline-first as a PWA and syncs when connectivity returns. Designed a responsive layout with Tailwind CSS and tested it with 6 nurses. Since launch it is used by 3 clinics and cut average registration time from 9 minutes to 4 minutes.",
+            chips: ["TypeScript", "React", "HTML & CSS", "Offline-First & Low-Bandwidth Design"],
+            meta: "4 measurable figures · States a concrete outcome · In real-world use",
+            link: "https://github.com/amina-yusuf/clinic-queue"
+          },
+          {
+            title: "Kakuma market prices board",
+            detailTag: "Moderate detail",
+            summary: "Designed and built a JavaScript site with a small REST API so 40 traders can post daily prices by SMS. Trained 2 volunteers to maintain it and wrote the documentation in Swahili and English. Reviewed pull requests on GitHub for a team of 3.",
+            chips: ["JavaScript", "API Design", "Version Control & Code Review", "Offline-First & Low-Bandwidth Design", "Team Leadership & Training", "Reports & Documentation"],
+            meta: "3 measurable figures · States a concrete outcome · Led or trained others",
+            link: ""
+          }
+        ],
+        strengths: [
+          ["Measures results", "From evidence", "Since launch it is used by 3 clinics and cut average registration time from 9 minutes to 4 minutes."],
+          ["Delivers work people actually use", "From evidence", "Since launch it is used by 3 clinics and cut average registration time from 9 minutes to 4 minutes."],
+          ["Leads and trains others", "From evidence", "Trained 2 volunteers to maintain it and wrote the documentation in Swahili and English."],
+          ["Gets results in constrained settings", "From evidence", "Built a React and TypeScript web app that lets a camp health clinic register patients and manage the waiting queue on low-cost Android tablets."],
+          ["Work open to inspection", "From evidence", "Public repository amina-yusuf/clinic-queue can be reviewed line by line."],
+          ["Multilingual", "Self-reported", "Works across 4 languages: Somali, Swahili, English and Arabic."]
+        ],
+        complianceItems: [
+          ["Identity / UNHCR documentation", "UNHCR or government-issued refugee ID", "Ready 35/35"],
+          ["Work authorisation", "Authorised to work where I live", "Ready 35/35"],
+          ["Payment pathway", "Mobile money or digital wallet", "Ready 24/30"]
+        ],
+        contracts: [
+          ["Local employment contract", "Likely eligible", "States the right to work locally and holds an identity document."],
+          ["Remote / freelance contract", "Likely eligible", "Holds ID a contractor platform can check and a way to receive payment."]
+        ],
+        bridging: "Turn stated skills into evidence: Python and Cloud & DevOps. These are mentioned in the background but not in any project. Add a case study or a work sample that uses them.",
+        readinessNotes: [
+          "Evidence supports independent contribution as Frontend Developer: TypeScript, Offline-First & Low-Bandwidth Design and HTML & CSS are shown at Proficient level or above.",
+          "All core skills for Frontend Developer appear in the evidence.",
+          "Public work is available for technical review, which suits remote hiring.",
+          "Working languages (self-reported): Somali, Swahili, English and Arabic. States 4 years of experience.",
+          "Stated but not shown in any project or repository: Python and Cloud & DevOps."
+        ],
+        breakdown: [
+          ["Repository / portfolio analysis", "38/38", 100, "Sample repository data: amina-yusuf/clinic-queue, 4 languages, 14 stars, recently active. Ownership of the account is not confirmed."],
+          ["Project detail", "22/30", 73, "2 project case studies analysed for specifics: what was done, with which tools, and what happened."],
+          ["Measurable outcomes", "15/15", 100, "7 figures cited that an employer can ask about or check."],
+          ["Claims match the evidence", "15/15", 100, "5 of 5 core skills for Frontend Development are backed by evidence."],
+          ["Profile completeness", "10/10", 100, "5 of 5 profile sections filled in. These details are self-reported."]
+        ],
+        repoCard: {
+          name: "amina-yusuf/clinic-queue",
+          desc: "Offline-first patient queue for small clinics",
+          stats: "TypeScript 80% · CSS 12% · JavaScript 5% · HTML 3% · 14 stars · 3 forks · Last activity Oct 2026",
+          url: "https://github.com/amina-yusuf/clinic-queue"
+        }
+      },
+      {
+        id: "oksana",
+        code: "GSP-OKS1-88PL",
+        initials: "OM",
+        name: "Oksana Melnyk",
+        role: "Data Analyst",
+        location: "Warsaw, Poland",
+        country: "Poland",
+        langs: ["Ukrainian", "Polish", "English"],
+        exp: "5 years",
+        issued: "25 Nov 2026",
+        score: 88,
+        levelLabel: "Strong evidence",
+        compliance: 100,
+        complianceStatus: "Ready to hire and pay",
+        roleMatch: "100% role match",
+        shared: 1,
+        bio: "Data analyst experienced in SQL pipelines, Python analysis, and interactive dashboards for humanitarian and civic programmes.",
+        verifiedSkills: [
+          ["Python", "Advanced", "Software · Repository + project", "Data cleaning & cohort notebooks verified", "Built automated validation scripts and reproducible analysis workflows."],
+          ["Dashboards & Data Visualisation", "Advanced", "Analytics · Project case study", "Operational KPI views reviewed", "Published clear visual reporting for program leads."],
+          ["SQL & Databases", "Proficient", "Data · Repository + project", "Query structure & joins verified", "Aggregated multi-source tables for weekly tracking."],
+          ["Data Analysis", "Proficient", "Analytics · Project case study", "Outcome metrics documented", "Identified retention patterns and service bottlenecks."]
+        ],
+        selfReportedSkills: ["R"],
+        projects: [
+          {
+            title: "Regional service & caseload tracker",
+            detailTag: "Strong detail",
+            summary: "Built SQL queries and Python scripts to clean weekly intake records and generate automated summary dashboards for 4 service points.",
+            chips: ["Python", "SQL & Databases", "Dashboards & Data Visualisation", "Data Analysis"],
+            meta: "3 measurable figures · States a concrete outcome · In real-world use",
+            link: "https://github.com/oksana-melnyk/caseload-tracker"
+          }
+        ],
+        strengths: [
+          ["Measures results", "From evidence", "Cut weekly reporting prep time by 60% across 4 teams."],
+          ["Work open to inspection", "From evidence", "Reproducible scripts and documented schema available."]
+        ],
+        complianceItems: [
+          ["Identity / UNHCR documentation", "Verified residence & work record", "Ready 35/35"],
+          ["Work authorisation", "Authorised to work in host & remote roles", "Ready 35/35"],
+          ["Payment pathway", "SEPA bank & digital transfer ready", "Ready 30/30"]
+        ],
+        contracts: [
+          ["Local employment contract", "Likely eligible", "Full work authorisation in host country."],
+          ["Remote / freelance contract", "Likely eligible", "Ready for cross-border invoicing and payout."]
+        ],
+        bridging: "Add an end-to-end sample dataset walkthrough for R or statistical testing if targeting research-heavy roles.",
+        readinessNotes: [
+          "Core data and analytics skills are supported by concrete case studies and code.",
+          "Compliance and payment readiness is at 100/100."
+        ],
+        breakdown: [
+          ["Repository / portfolio analysis", "35/38", 92, "Clean notebooks and documented data transformations."],
+          ["Project detail", "25/30", 83, "Clear problem, methodology, and outcome stated."],
+          ["Measurable outcomes", "14/15", 93, "Quantified time savings and reporting reach."],
+          ["Claims match the evidence", "15/15", 100, "Core analytics skills match demonstrated work."],
+          ["Profile completeness", "10/10", 100, "All profile fields completed."]
+        ],
+        repoCard: {
+          name: "oksana-melnyk/caseload-tracker",
+          desc: "Reproducible data pipeline & reporting scripts",
+          stats: "Python 68% · SQL 24% · Markdown 8%",
+          url: "https://github.com/oksana-melnyk/caseload-tracker"
+        }
+      },
+      {
+        id: "daniel",
+        code: "GSP-DAN2-87ET",
+        initials: "DT",
+        name: "Daniel Tesfay",
+        role: "Backend Developer",
+        location: "Addis Ababa, Ethiopia",
+        country: "Ethiopia",
+        langs: ["Tigrinya", "Amharic", "English"],
+        exp: "4 years",
+        issued: "25 Nov 2026",
+        score: 87,
+        levelLabel: "Strong evidence",
+        compliance: 67,
+        complianceStatus: "Nearly ready",
+        roleMatch: "100% role match",
+        shared: 1,
+        bio: "Backend developer building REST APIs, database schemas, and automated service checks in Python.",
+        verifiedSkills: [
+          ["Python", "Advanced", "Software · Repository + project", "API & service modules verified", "Implemented authentication, validation, and error handling."],
+          ["Cloud & DevOps", "Proficient", "Software · Repository", "Container & deployment config shown", "Automated build and environment setup scripts."],
+          ["API Design", "Proficient", "Software · Project case study", "REST endpoints & payloads documented", "Structured clean JSON contracts for client apps."],
+          ["Software Testing", "Working", "Software · Repository", "Unit & integration test cases present", "Verified core service paths prior to release."]
+        ],
+        selfReportedSkills: ["Docker", "PostgreSQL"],
+        projects: [
+          {
+            title: "Micro-grant status & audit API",
+            detailTag: "Strong detail",
+            summary: "Developed backend endpoints, role checks, and test suites for tracking application milestones and disbursement logs.",
+            chips: ["Python", "API Design", "Cloud & DevOps", "Software Testing"],
+            meta: "2 measurable figures · States a concrete outcome",
+            link: "https://github.com/daniel-tesfay/grant-api"
+          }
+        ],
+        strengths: [
+          ["Work open to inspection", "From evidence", "Repository includes test suite and setup guide."]
+        ],
+        complianceItems: [
+          ["Identity / UNHCR documentation", "ID on file", "Ready 35/35"],
+          ["Work authorisation", "Remote & local eligibility under review", "Partial"],
+          ["Payment pathway", "Confirming international payout rail", "In progress"]
+        ],
+        contracts: [
+          ["Local employment contract", "Likely eligible", "Local documentation available."],
+          ["Remote / freelance contract", "Bridging needed", "Finalize cross-border payment & tax setup."]
+        ],
+        bridging: "Complete payment rail setup to lift compliance readiness from 67/100 to 80+.",
+        readinessNotes: [
+          "Backend engineering skills are backed by repository evidence.",
+          "Payment pathway check is recommended before international contracting."
+        ],
+        breakdown: [
+          ["Repository / portfolio analysis", "34/38", 89, "Active repo with tests and clear structure."],
+          ["Project detail", "24/30", 80, "Explains architecture and testing steps."],
+          ["Measurable outcomes", "12/15", 80, "States reliability and response improvements."],
+          ["Claims match the evidence", "15/15", 100, "Core backend skills aligned."],
+          ["Profile completeness", "10/10", 100, "Complete profile."]
+        ],
+        repoCard: {
+          name: "daniel-tesfay/grant-api",
+          desc: "Backend service API with automated tests",
+          stats: "Python 82% · Shell 11% · YAML 7%",
+          url: "https://github.com/daniel-tesfay/grant-api"
+        }
+      },
+      {
+        id: "omar",
+        code: "GSP-OMA3-70TR",
+        initials: "OA",
+        name: "Omar Al-Khatib",
+        role: "Site Engineer (Civil)",
+        location: "Gaziantep, Türkiye",
+        country: "Türkiye",
+        langs: ["Arabic", "Turkish", "English"],
+        exp: "6 years",
+        issued: "25 Nov 2026",
+        score: 70,
+        levelLabel: "Good evidence",
+        compliance: 83,
+        complianceStatus: "Ready to hire and pay",
+        roleMatch: "100% role match",
+        shared: 1,
+        bio: "Civil site engineer experienced in structural site supervision, project schedules, and field team coordination.",
+        verifiedSkills: [
+          ["Construction Management", "Proficient", "Engineering · Case study", "Site logs & milestone tracking documented", "Coordinated daily site tasks and material schedules."],
+          ["Structural & Civil Engineering", "Proficient", "Engineering · Case study", "Site inspection & reinforcement checks", "Verified structural alignment and safety compliance."],
+          ["Project Management", "Working", "Operations · Case study", "BoQ & timeline tracking shown", "Tracked deliverables across multi-week phases."],
+          ["Team Leadership & Training", "Working", "Operations · Case study", "Safety briefings & crew guidance", "Led field crews on daily safety and quality standards."]
+        ],
+        selfReportedSkills: ["AutoCAD", "Quantity Surveying"],
+        projects: [
+          {
+            title: "Community shelter & rehabilitation site log",
+            detailTag: "Moderate detail",
+            summary: "Documented daily site progress, safety checks, material deliveries, and defect resolution across rehabilitation works.",
+            chips: ["Construction Management", "Structural & Civil Engineering", "Project Management", "Team Leadership & Training"],
+            meta: "3 measurable figures · Led or trained others",
+            link: ""
+          }
+        ],
+        strengths: [
+          ["Leads and trains others", "From evidence", "Conducted regular site safety and quality briefings."]
+        ],
+        complianceItems: [
+          ["Identity / UNHCR documentation", "Registered ID & work permit record", "Ready 35/35"],
+          ["Work authorisation", "Authorised in host location", "Ready 35/35"],
+          ["Payment pathway", "Local bank & transfer channel active", "Ready 25/30"]
+        ],
+        contracts: [
+          ["Local employment contract", "Likely eligible", "Eligible for local engineering & site roles."],
+          ["Remote / freelance contract", "Likely eligible", "Suitable for remote project coordination & planning."]
+        ],
+        bridging: "Explore local engineering license recognition or bridging credentials for regulated sign-off.",
+        readinessNotes: [
+          "Strong practical site and coordination background.",
+          "Regulated engineering sign-off may require local credential bridging."
+        ],
+        breakdown: [
+          ["Repository / portfolio analysis", "22/38", 58, "Case-study driven rather than software repository."],
+          ["Project detail", "22/30", 73, "Clear site workflows and safety steps."],
+          ["Measurable outcomes", "12/15", 80, "Includes schedule and site metrics."],
+          ["Claims match the evidence", "14/15", 93, "Core site skills match documented work."],
+          ["Profile completeness", "10/10", 100, "Complete profile."]
+        ],
+        repoCard: null
+      },
+      {
+        id: "farida",
+        code: "GSP-FAR4-61DE",
+        initials: "FR",
+        name: "Farida Rahimi",
+        role: "Secondary Mathematics Teacher",
+        location: "Berlin, Germany",
+        country: "Germany",
+        langs: ["Dari", "Pashto", "English", "German"],
+        exp: "5 years",
+        issued: "25 Nov 2026",
+        score: 61,
+        levelLabel: "Developing evidence",
+        compliance: 60,
+        complianceStatus: "Nearly ready",
+        roleMatch: "100% role match",
+        shared: 1,
+        bio: "Secondary mathematics educator focused on clear problem-solving lessons, formative assessments, and student support.",
+        verifiedSkills: [
+          ["Teaching & Classroom Instruction", "Proficient", "Education · Case study", "Structured lesson plans & pacing", "Delivered clear step-by-step math instruction."],
+          ["Curriculum & Lesson Design", "Working", "Education · Case study", "Topic modules & practice sets", "Organized algebra and geometry practice units."],
+          ["Mathematics", "Proficient", "Education · Case study", "Worked solutions & problem banks", "Covered core secondary math topics."],
+          ["Learning Assessment", "Working", "Education · Case study", "Diagnostic quizzes & feedback", "Tracked student progress and common errors."]
+        ],
+        selfReportedSkills: ["EdTech Tools"],
+        projects: [
+          {
+            title: "Secondary algebra & problem-solving unit",
+            detailTag: "Moderate detail",
+            summary: "Designed a structured 6-week math unit with worked examples, practice worksheets, and progress checks for secondary learners.",
+            chips: ["Teaching & Classroom Instruction", "Curriculum & Lesson Design", "Mathematics", "Learning Assessment"],
+            meta: "2 measurable figures · States a concrete outcome",
+            link: ""
+          }
+        ],
+        strengths: [
+          ["Delivers work people actually use", "From evidence", "Lesson sets used with learners to build exam confidence."]
+        ],
+        complianceItems: [
+          ["Identity / UNHCR documentation", "Residence & status documentation on file", "Ready 35/35"],
+          ["Work authorisation", "Teaching & remote eligibility check", "In progress"],
+          ["Payment pathway", "Bank account active", "Ready 25/30"]
+        ],
+        contracts: [
+          ["Local employment contract", "Bridging needed", "Teacher recognition or bridging may be needed for public schools."],
+          ["Remote / freelance contract", "Likely eligible", "Suitable for online tutoring and curriculum support."]
+        ],
+        bridging: "Complete teacher credential recognition or bridging pathway for formal school placement.",
+        readinessNotes: [
+          "Curriculum and assessment samples demonstrate instructional readiness.",
+          "Formal teaching recognition varies by school system."
+        ],
+        breakdown: [
+          ["Repository / portfolio analysis", "18/38", 47, "Education portfolio & lesson samples."],
+          ["Project detail", "20/30", 67, "Shows lesson structure and assessment."],
+          ["Measurable outcomes", "9/15", 60, "Includes learner check-in notes."],
+          ["Claims match the evidence", "14/15", 93, "Matches core teaching skills."],
+          ["Profile completeness", "10/10", 100, "Complete profile."]
+        ],
+        repoCard: null
+      },
+      {
+        id: "jean",
+        code: "GSP-JEA5-60UG",
+        initials: "JN",
+        name: "Jean-Baptiste Nkurunziza",
+        role: "Community Health Nurse",
+        location: "Nakivale, Uganda",
+        country: "Uganda",
+        langs: ["French", "Kirundi", "Swahili", "English"],
+        exp: "6 years",
+        issued: "25 Nov 2026",
+        score: 60,
+        levelLabel: "Developing evidence",
+        compliance: 94,
+        complianceStatus: "Ready to hire and pay",
+        roleMatch: "100% role match",
+        shared: 1,
+        bio: "Community health nurse supporting outreach clinics, maternal and child health follow-ups, and referral coordination.",
+        verifiedSkills: [
+          ["Community Health Outreach", "Proficient", "Health · Case study", "Field outreach & household follow-up", "Supported community health sessions across settlement zones."],
+          ["Emergency Care & Referral", "Working", "Health · Case study", "Triage & referral handoffs", "Coordinated timely referrals to clinic care."],
+          ["Maternal & Child Health", "Proficient", "Health · Case study", "Antenatal & child growth follow-up", "Tracked routine check-ups and caregiver guidance."],
+          ["Clinical Nursing Care", "Working", "Health · Case study", "Routine care & patient notes", "Maintained accurate care logs and follow-ups."]
+        ],
+        selfReportedSkills: ["Health Data Reporting"],
+        projects: [
+          {
+            title: "Maternal & child outreach follow-up workflow",
+            detailTag: "Moderate detail",
+            summary: "Organized community follow-up schedules, caregiver reminders, and referral handoffs for maternal and child health visits.",
+            chips: ["Community Health Outreach", "Emergency Care & Referral", "Maternal & Child Health", "Clinical Nursing Care"],
+            meta: "3 measurable figures · In real-world use",
+            link: ""
+          }
+        ],
+        strengths: [
+          ["Gets results in constrained settings", "From evidence", "Coordinated outreach and follow-up in high-need community settings."]
+        ],
+        complianceItems: [
+          ["Identity / UNHCR documentation", "Refugee ID / registration on file", "Ready 35/35"],
+          ["Work authorisation", "Eligible to work in host & partner roles", "Ready 35/35"],
+          ["Payment pathway", "Mobile money / payout channel ready", "Ready 24/30"]
+        ],
+        contracts: [
+          ["Local employment contract", "Likely eligible", "Eligible for community health & NGO roles."],
+          ["Remote / freelance contract", "Likely eligible", "Suitable for health coordination & remote support."]
+        ],
+        bridging: "Add nursing council registration or bridging documentation where clinical sign-off is required.",
+        readinessNotes: [
+          "Compliance and payment readiness is strong (94/100).",
+          "Clinical licensing verification is advised for regulated clinical roles."
+        ],
+        breakdown: [
+          ["Repository / portfolio analysis", "17/38", 45, "Case-study & workflow documentation."],
+          ["Project detail", "20/30", 67, "Clear outreach and referral steps."],
+          ["Measurable outcomes", "10/15", 67, "States outreach and follow-up figures."],
+          ["Claims match the evidence", "13/15", 87, "Aligns with community health skills."],
+          ["Profile completeness", "10/10", 100, "Complete profile."]
+        ],
+        repoCard: null
+      }
+    ];
+
+    var TABS = [
+      ["home", "Home"],
+      ["create", "Create"],
+      ["talent", "Talent"],
+      ["passport", "Passport"]
+    ];
+
+    var app = {
+      tab: "home",
+      pid: "amina",
+      q: "",
+      skill: "",
+      role: "",
+      lang: "",
+      loc: "",
+      minScore: 0,
+      shortlist: [],
+      intros: []
+    };
+
+    try {
+      var saved = JSON.parse(localStorage.getItem("gsp_app_state") || "null");
+      if (saved) {
+        if (saved.shortlist) app.shortlist = saved.shortlist;
+        if (saved.intros) app.intros = saved.intros;
+        if (saved.sharedMap) {
+          PROFILES.forEach(function (p) {
+            if (typeof saved.sharedMap[p.id] === "number") p.shared = saved.sharedMap[p.id];
+          });
+        }
+      }
+    } catch (e) {}
+
+    function saveState() {
+      try {
+        var sharedMap = {};
+        PROFILES.forEach(function (p) { sharedMap[p.id] = p.shared; });
+        localStorage.setItem("gsp_app_state", JSON.stringify({
+          shortlist: app.shortlist,
+          intros: app.intros,
+          sharedMap: sharedMap
+        }));
+      } catch (e) {}
+    }
+
+    function esc(v) {
+      return String(v).replace(/[&<>"]/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+      });
+    }
+
+    function go(t) {
+      app.tab = t;
+      render();
+      window.scrollTo(0, 0);
+    }
+
+    function openPassport(id) {
+      app.pid = id;
+      app.tab = "passport";
+      render();
+      window.scrollTo(0, 0);
+    }
+
+    function toggleShortlist(id) {
+      var idx = app.shortlist.indexOf(id);
+      if (idx > -1) app.shortlist.splice(idx, 1); else app.shortlist.push(id);
+      saveState();
+      render();
+    }
+
+    function requestIntro(id) {
+      if (app.intros.indexOf(id) === -1) app.intros.push(id);
+      saveState();
+      render();
+    }
+
+    function render() {
+      document.getElementById("nav").innerHTML = TABS.map(function (x) {
+        return '<button class="' + (app.tab === x[0] ? "on" : "") + '" onclick="go(\'' + x[0] + '\')">' + esc(x[1]) + "</button>";
+      }).join("");
+      var views = { home: vHome, create: vCreate, talent: vTalent, passport: vPassport };
+      document.getElementById("view").innerHTML = (views[app.tab] || vHome)();
+    }
+
+    function profileCard(p, showIntro) {
+      var inShort = app.shortlist.indexOf(p.id) > -1;
+      var requested = app.intros.indexOf(p.id) > -1;
+      return '<div class="card">' +
+        '<div class="row" style="justify-content:space-between;align-items:flex-start">' +
+        '<div class="row" style="gap:10px"><span class="avatar">' + esc(p.initials) + '</span>' +
+        '<div><b>' + esc(p.name) + '</b><div class="mu">' + esc(p.role) + "</div></div></div>" +
+        '<span class="score-ring">' + p.score + "</span></div>" +
+        '<div class="mu" style="margin-top:10px">📍 ' + esc(p.location) + "<br>🌐 " + esc(p.langs.join(" · ")) + "</div>" +
+        '<div style="margin:10px 0">' + p.verifiedSkills.slice(0, 4).map(function (s) {
+          return '<span class="pill">◎ ' + esc(s[0]) + "</span>";
+        }).join("") + "</div>" +
+        '<div class="row" style="margin-bottom:10px"><span class="pill">◎ Compliance ' + p.compliance + "/100 · " + esc(p.complianceStatus) +
+        '</span><span class="pill">' + esc(p.roleMatch) + "</span></div>" +
+        '<div class="row"><button class="pri" style="flex:1" onclick="openPassport(\'' + p.id + '\')">View passport →</button>' +
+        '<button onclick="toggleShortlist(\'' + p.id + '\')">' + (inShort ? "✓ Shortlisted" : "Shortlist") + "</button></div>" +
+        (showIntro ? '<div style="margin-top:8px"><button class="gold" style="width:100%" onclick="requestIntro(\'' + p.id + '\')">' +
+        (requested ? "✓ Intro / Interview Requested" : "✈ Request Intro / Interview") + "</button></div>" : "") +
+        '<div class="row" style="justify-content:space-between;margin-top:10px" class="mu"><span class="mu" style="font-size:11.5px">' +
+        esc(p.code) + '</span><span class="mu" style="font-size:11.5px">Sample profile</span></div></div>';
+    }
+
+    function vHome() {
+      var avg = Math.round(PROFILES.reduce(function (a, b) { return a + b.score; }, 0) / PROFILES.length);
+      var ready = PROFILES.filter(function (p) { return p.compliance >= 80; }).length;
+      var featured = [PROFILES[3], PROFILES[1], PROFILES[5]];
+
+      return '<section class="hero-banner"><div class="grid2" style="align-items:center">' +
+        '<div><div class="mu" style="font-size:11.5px;letter-spacing:.06em;text-transform:uppercase">CREDENTIAL &amp; SKILLS VALIDATION</div>' +
+        "<h1>Skills speak when paperwork can’t.</h1>" +
+        '<p class="mu">Displaced professionals lose diplomas, licences and references. They do not lose what they can do. Build a passport from real work that an employer can inspect, with a clear path to being hired and paid.</p>' +
+        '<div class="row" style="margin-top:14px"><button class="gold" onclick="go(\'create\')">Create Your Skill Passport →</button>' +
+        '<button onclick="go(\'talent\')" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)">Explore Vetted Talent</button></div></div>' +
+        '<div class="hero-card"><div class="row" style="justify-content:space-between"><div class="mu" style="font-size:11px">SKILL PASSPORT · GSP-3EY2-EU5E</div>' +
+        '<span class="score-ring" style="width:42px;height:42px;font-size:14px">92</span></div>' +
+        '<div style="margin-top:6px"><b>Amina Yusuf</b><div class="mu">Frontend Developer · Kakuma, Kenya</div></div>' +
+        '<div style="margin-top:10px"><div class="row" style="justify-content:space-between"><span class="mu">TypeScript</span><span class="pill">Advanced</span></div>' +
+        '<div class="row" style="justify-content:space-between;margin-top:4px"><span class="mu">Offline-First &amp; Low-Bandwidth Design</span><span class="pill">Advanced</span></div>' +
+        '<div class="row" style="justify-content:space-between;margin-top:4px"><span class="mu">HTML &amp; CSS</span><span class="pill">Advanced</span></div></div>' +
+        '<div class="row" style="margin-top:12px"><span class="pill">◎ 11 skills with evidence</span><span class="pill g">2 self-reported</span></div></div>' +
+        "</div></section>" +
+        '<div class="row" style="justify-content:space-between;margin-bottom:8px"><h2>Impact right now</h2><span class="mu">● Calculated live from the passports in this app</span></div>' +
+        '<section class="grid2"><div class="card"><div class="num">' + PROFILES.length + '</div><b>Skill Passports Issued</b><div class="mu">6 samples · 0 on this device</div></div>' +
+        '<div class="card"><div class="num">' + avg + '</div><b>Average Evidence Score</b><div class="mu">Out of 100, same rubric for everyone</div></div>' +
+        '<div class="card"><div class="num">' + ready + " of " + PROFILES.length + '</div><b>Compliance-ready candidates</b><div class="mu">Readiness 80/100 or higher</div></div>' +
+        '<div class="card"><div class="num">6</div><b>Host countries represented</b><div class="mu">Where candidates live now</div></div></section>' +
+        "<h2>From missing paperwork to job-ready, in four steps</h2>" +
+        '<section class="grid2">' +
+        '<div class="card"><span class="pill">Step 1</span><h3>Describe real work</h3><p class="mu">Projects you delivered, the tools you used and what changed. Add a repository or portfolio link, and say where you stand on ID, work authorisation and payment.</p></div>' +
+        '<div class="card"><span class="pill">Step 2</span><h3>Evidence is analysed</h3><p class="mu">One published rubric reads the case studies and repository. Skills and levels come only from that evidence, never from job titles or years stated.</p></div>' +
+        '<div class="card"><span class="pill">Step 3</span><h3>Close the gaps</h3><p class="mu">The passport lists bridging steps: recognition routes for regulated professions, micro-credentials for missing core skills, and what is needed to be hired and paid.</p></div>' +
+        '<div class="card"><span class="pill">Step 4</span><h3>Share and get hired</h3><p class="mu">One link or one printed page. Employers filter by verified skill and readiness, shortlist, and request an introduction.</p></div>' +
+        "</section>" +
+        '<div class="card"><h2>Two kinds of information, never mixed</h2><p class="mu">Trust comes from being clear about what was checked and what was simply said.</p>' +
+        '<div class="grid2"><div class="two-box v"><b>◎ Verified evidence</b><p class="mu" style="margin-bottom:0">Skills found in analysed project case studies and in the contents of a public repository: languages used, README, activity. Each one links back to the sentence or file that supports it.</p></div>' +
+        '<div class="two-box s"><b>✎ Self-reported claims</b><p class="mu" style="margin-bottom:0">Background, years of experience, languages, goals and the compliance checklist, as the candidate states them. Shown honestly, and never used to raise a proficiency level or the Evidence Score.</p></div></div></div>' +
+        '<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px"><div><h2>Sample passports</h2><div class="mu">Fictional profiles you can open, print and share right now.</div></div>' +
+        '<button onclick="go(\'talent\')">See all profiles →</button></div>' +
+        '<section class="grid2">' + featured.map(function (p) { return profileCard(p, false); }).join("") + "</section>" +
+        '<div class="row" style="margin-top:8px"><span class="pill">SDG 4 Quality education</span><span class="pill">SDG 8 Decent work</span><span class="pill">SDG 10 Reduced inequalities</span><span class="pill">SDG 16 Strong institutions</span><span class="pill">SDG 17 Partnerships</span></div>';
+    }
+
+    function vCreate() {
+      return '<div class="card"><h2>Create your Skill Passport</h2><p class="mu">Describe what you have actually built, run or delivered. The more specific you are, the more your passport can show as evidence.</p>' +
+        '<div class="two-box v" style="margin-top:12px"><div class="row" style="justify-content:space-between"><b>Just testing? Fill the form with a ready-made profile.</b>' +
+        '<button class="pri" onclick="fillAmina()">Load Sample Profile</button></div>' +
+        '<div class="row" style="margin-top:10px">' + PROFILES.map(function (p) {
+          return '<button onclick="openPassport(\'' + p.id + '\')">' + esc(p.name.split(" ")[0]) + " · " + esc(p.role) + "</button>";
+        }).join("") + '</div></div></div>' +
+        '<form class="card" onsubmit="return submitPassport(event)">' +
+        "<h2>About you</h2><p class=\"mu\">These details are shown on your passport as self-reported.</p>" +
+        '<div class="grid2"><div><label>Full name</label><input id="cName" required value="Amina Yusuf"></div>' +
+        '<div><label>Current location / country</label><input id="cLoc" value="Kakuma, Kenya"></div>' +
+        '<div><label>Spoken languages</label><input id="cLangs" value="Somali, Swahili, English, Arabic"></div>' +
+        '<div><label>Target role</label><input id="cRole" value="Frontend Developer"></div></div>' +
+        '<label>Years of experience</label><input id="cExp" value="4">' +
+        '<label>Background and goals</label><textarea id="cBio" rows="3">Self-taught web developer. I studied computer science for two years in Mogadishu before displacement and my transcripts could not be recovered. I have built websites and tools for community organisations since 2021 and want a remote frontend role. I also know some Python and Docker.</textarea>' +
+        '<h2 style="margin-top:18px">Projects and case studies</h2>' +
+        '<div class="card" style="background:var(--bg)"><b>PROJECT 1</b><label>Title</label><input id="p1Title" value="Clinic Queue: offline-first patient queue">' +
+        '<label>What you did and what happened</label><textarea id="p1Desc" rows="3">Built a React and TypeScript web app that lets a camp health clinic register patients and manage the waiting queue on low-cost Android tablets. The app works offline-first as a PWA and syncs when connectivity returns. Designed a responsive layout with Tailwind CSS and tested it with 6 nurses. Since launch it is used by 3 clinics and cut average registration time from 9 minutes to 4 minutes.</textarea>' +
+        '<label>Link to this project</label><input id="p1Link" value="https://github.com/amina-yusuf/clinic-queue"></div>' +
+        '<div class="card" style="background:var(--bg)"><b>PROJECT 2</b><label>Title</label><input id="p2Title" value="Kakuma market prices board">' +
+        '<label>What you did and what happened</label><textarea id="p2Desc" rows="3">Designed and built a JavaScript site with a small REST API so 40 traders can post daily prices by SMS. Trained 2 volunteers to maintain it and wrote the documentation in Swahili and English. Reviewed pull requests on GitHub for a team of 3.</textarea>' +
+        '<label>Link to this project</label><input id="p2Link" value="https://"></div>' +
+        '<h2 style="margin-top:14px">Repository or portfolio</h2><label>GitHub repository or portfolio URL</label>' +
+        '<input id="cRepo" value="https://github.com/amina-yusuf/clinic-queue">' +
+        '<h2 style="margin-top:14px">Compliance and payment readiness</h2>' +
+        '<div class="grid2"><div><label>Identity / UNHCR documentation</label><select id="cId"><option>UNHCR or government-issued refugee ID</option><option>Passport / national ID</option><option>Not disclosed</option></select></div>' +
+        '<div><label>Work authorisation</label><select id="cAuth"><option>Authorised to work where I live</option><option>Remote / freelance eligible</option><option>Pending review</option></select></div>' +
+        '<div><label>How you can be paid</label><select id="cPay"><option>Mobile money or digital wallet</option><option>Bank transfer</option><option>International payout platform</option></select></div></div>' +
+        '<div class="row" style="margin-top:16px"><button class="pri" type="submit">✦ Evaluate and generate passport</button>' +
+        '<button type="reset">Clear form</button></div></form>';
+    }
+
+    function fillAmina() {
+      document.getElementById("cName").value = "Amina Yusuf";
+      document.getElementById("cLoc").value = "Kakuma, Kenya";
+      document.getElementById("cLangs").value = "Somali, Swahili, English, Arabic";
+      document.getElementById("cRole").value = "Frontend Developer";
+      document.getElementById("cExp").value = "4";
+    }
+
+    function submitPassport(ev) {
+      ev.preventDefault();
+      var g = function (id) { return document.getElementById(id).value.trim(); };
+      var name = g("cName") || "New Candidate";
+      var role = g("cRole") || "Frontend Developer";
+      var loc = g("cLoc") || "Remote";
+      var langs = g("cLangs").split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+      var p1t = g("p1Title") || "Project case study";
+      var p1d = g("p1Desc") || "Documented project work.";
+      var p1l = g("p1Link");
+      var p2t = g("p2Title");
+      var p2d = g("p2Desc");
+      var repo = g("cRepo");
+
+      var textAll = (p1d + " " + p2d + " " + repo).toLowerCase();
+      var detected = [];
+      var candidates = [
+        ["TypeScript", /typescript|\bts\b/],
+        ["React", /react|pwa/],
+        ["JavaScript", /javascript|\bjs\b|rest api/],
+        ["HTML & CSS", /html|css|tailwind/],
+        ["Python", /python/],
+        ["SQL & Databases", /\bsql\b|database/],
+        ["Offline-First & Low-Bandwidth Design", /offline|low-cost|bandwidth/],
+        ["Team Leadership & Training", /trained|mentored|team|led/]
+      ];
+      candidates.forEach(function (c) {
+        if (c[1].test(textAll)) {
+          detected.push([c[0], "Proficient", "Project + repository evidence", "Matched in submitted case study / repo", p1d.slice(0, 140)]);
+        }
+      });
+      if (!detected.length) {
+        detected.push(["Practical Project Delivery", "Working", "Submitted case study", "Reviewed from project description", p1d.slice(0, 140)]);
+      }
+
+      var score = Math.min(98, 55 + detected.length * 6 + (p1d.length > 100 ? 6 : 0));
+      var initials = name.split(/\s+/).map(function (w) { return w[0]; }).join("").slice(0, 2).toUpperCase() || "GP";
+      var id = "custom_" + Date.now();
+      var code = "GSP-" + initials + "-" + String(Math.floor(1000 + Math.random() * 8999));
+
+      var newP = {
+        id: id,
+        code: code,
+        initials: initials,
+        name: name,
+        role: role,
+        location: loc,
+        country: loc.split(",").pop().trim() || "Global",
+        langs: langs.length ? langs : ["English"],
+        exp: (g("cExp") || "2") + " years",
+        issued: "25 Nov 2026",
+        score: score,
+        levelLabel: score >= 80 ? "Strong evidence" : "Good evidence",
+        compliance: 90,
+        complianceStatus: "Ready to hire and pay",
+        roleMatch: "100% role match",
+        shared: 0,
+        bio: g("cBio") || "Candidate skill passport profile.",
+        verifiedSkills: detected,
+        selfReportedSkills: ["Docker", "Cloud & DevOps"],
+        projects: [
+          {
+            title: p1t,
+            detailTag: "Strong detail",
+            summary: p1d,
+            chips: detected.slice(0, 4).map(function (d) { return d[0]; }),
+            meta: "Evaluated from submitted project description",
+            link: p1l && p1l.length > 8 ? p1l : ""
+          }
+        ],
+        strengths: [
+          ["Work open to inspection", "From evidence", "Project details and links provided for review."]
+        ],
+        complianceItems: [
+          ["Identity / UNHCR documentation", g("cId"), "Ready 35/35"],
+          ["Work authorisation", g("cAuth"), "Ready 35/35"],
+          ["Payment pathway", g("cPay"), "Ready 25/30"]
+        ],
+        contracts: [
+          ["Local employment contract", "Likely eligible", "Based on stated location and eligibility."],
+          ["Remote / freelance contract", "Likely eligible", "Payment pathway declared."]
+        ],
+        bridging: "Add supporting metrics and repository links to strengthen verification depth.",
+        readinessNotes: [
+          "Generated from submitted project details and compliance selections."
+        ],
+        breakdown: [
+          ["Repository / portfolio analysis", 32, 85, repo || "Project link reviewed."],
+          ["Project detail", 24, 80, "Project summary evaluated."],
+          ["Measurable outcomes", 12, 80, "Outcome statements checked."],
+          ["Claims match the evidence", 14, 93, "Skills mapped to stated work."],
+          ["Profile completeness", 10, 100, "Form submitted."]
+        ],
+        repoCard: repo && repo.indexOf("github.com") > -1 ? {
+          name: repo.replace(/^https?:\/\/(www\.)?github\.com\//, ""),
+          desc: p2t || "Linked repository",
+          stats: p2d ? p2d.slice(0, 90) : "Repository link attached",
+          url: repo
+        } : null
+      };
+
+      PROFILES.unshift(newP);
+      openPassport(id);
+      return false;
+    }
+
+    function vPassport() {
+      var p = PROFILES.find(function (x) { return x.id === app.pid; }) || PROFILES[0];
+      var isShared = p.shared === 1;
+      var requested = app.intros.indexOf(p.id) > -1;
+      var inShort = app.shortlist.indexOf(p.id) > -1;
+      var shareUrl = "https://skill-passport-stories.lovable.app/passport/" + p.code;
+
+      return '<div class="row no-print" style="justify-content:space-between;margin-bottom:10px">' +
+        '<button onclick="go(\'talent\')">← Talent Explorer</button>' +
+        '<div class="row"><button class="pri">Full Passport</button><button onclick="window.print()">Summary</button></div></div>' +
+        '<section class="passport-banner"><div class="row" style="justify-content:space-between;align-items:flex-start">' +
+        '<div><div class="mu" style="font-size:11px;letter-spacing:.08em">GLOBAL SKILL PASSPORT</div>' +
+        '<h1 style="margin:4px 0">' + esc(p.name) + '</h1><div class="mu" style="font-size:15px">' + esc(p.role) + "</div>" +
+        '<div class="mu" style="margin-top:8px">📍 ' + esc(p.location) + " &nbsp; 🌐 " + esc(p.langs.join(" · ")) +
+        "<br>Passport no. <b>" + esc(p.code) + "</b> &nbsp; Issued " + esc(p.issued) + "</div></div>" +
+        '<div style="text-align:center"><div class="ring-light">' + p.score + '</div><div class="mu" style="font-size:11px;margin-top:4px">' + esc(p.levelLabel) + "</div></div>" +
+        "</div></section>" +
+        '<div class="card"><div class="row"><span class="mu">How to read this:</span><span class="pill">◎ Verified evidence</span><span class="pill g">✎ Self-reported claim</span></div></div>' +
+        '<div class="card"><h2>Verified skills</h2><div class="mu" style="margin-bottom:10px">' + p.verifiedSkills.length + " skills found in analysed projects and repository data</div>" +
+        p.verifiedSkills.map(function (s) {
+          return '<div class="card" style="padding:12px;margin-bottom:10px"><div class="row" style="justify-content:space-between"><b>' +
+            esc(s[0]) + '</b><span class="pill">●●● ' + esc(s[1]) + '</span></div>' +
+            '<div class="mu" style="font-size:12px">' + esc(s[2]) + '</div><div class="mu" style="margin-top:4px">' + esc(s[3]) + '</div>' +
+            '<div class="quote">“' + esc(s[4]) + "”</div></div>";
+        }).join("") + "</div>" +
+        '<div class="card"><h2>Highlighted projects</h2><div class="mu" style="margin-bottom:10px">Summarised from the candidate’s case studies</div>' +
+        p.projects.map(function (pr) {
+          return '<div class="card" style="background:var(--bg);margin-bottom:10px"><div class="row" style="justify-content:space-between"><b>' +
+            esc(pr.title) + '</b><span class="pill">' + esc(pr.detailTag) + '</span></div>' +
+            '<p class="mu" style="margin:8px 0">' + esc(pr.summary) + "</p>" +
+            "<div>" + pr.chips.map(function (c) { return '<span class="pill">◎ ' + esc(c) + "</span>"; }).join("") + "</div>" +
+            '<div class="mu" style="font-size:12px;margin-top:8px">' + esc(pr.meta) + "</div>" +
+            (pr.link ? '<div style="margin-top:6px"><a href="' + esc(pr.link) + '" target="_blank" style="color:var(--ac);font-size:13px">↗ ' + esc(pr.link) + "</a></div>" : "") + "</div>";
+        }).join("") + "</div>" +
+        '<div class="card"><h2>Real-world strengths</h2><div class="mu" style="margin-bottom:10px">Patterns in how this person works</div>' +
+        '<div class="grid2">' + p.strengths.map(function (st) {
+          var isEv = st[1] === "From evidence";
+          return '<div class="card" style="margin-bottom:0"><div class="row" style="justify-content:space-between"><b>' +
+            esc(st[0]) + '</b><span class="pill ' + (isEv ? "" : "g") + '">' + (isEv ? "◎ " : "✎ ") + esc(st[1]) + '</span></div>' +
+            '<div class="quote">“' + esc(st[2]) + "”</div></div>";
+        }).join("") + "</div></div>" +
+        '<div class="card"><div class="row" style="justify-content:space-between"><h2>Compliance and payment readiness</h2>' +
+        '<div><span class="num" style="font-size:24px">' + p.compliance + '</span><span class="mu">/100</span> <span class="pill">◎ ' + esc(p.complianceStatus) + "</span></div></div>" +
+        '<div class="mu" style="margin-bottom:10px">Can this person be contracted and paid? Declared by the candidate; documents were not inspected.</div>' +
+        '<div class="grid3">' + p.complianceItems.map(function (ci) {
+          return '<div class="card" style="background:var(--bg);margin-bottom:0"><div class="mu" style="font-size:11px;text-transform:uppercase">' +
+            esc(ci[0]) + '</div><div style="margin:4px 0"><b>' + esc(ci[1]) + '</b></div><span class="pill">◎ ' + esc(ci[2]) + "</span></div>";
+        }).join("") + '</div><div class="grid2" style="margin-top:10px">' + p.contracts.map(function (ct) {
+          return '<div class="card" style="margin-bottom:0"><div class="row" style="justify-content:space-between"><b>' +
+            esc(ct[0]) + '</b><span class="pill">◎ ' + esc(ct[1]) + '</span></div><div class="mu">' + esc(ct[2]) + "</div></div>";
+        }).join("") + "</div></div>" +
+        '<div class="card"><h2>Bridging and upskilling recommendations</h2><div class="mu" style="margin-bottom:8px">Next steps that would strengthen this passport</div>' +
+        '<div class="card" style="background:var(--bg);margin-bottom:0"><b>Turn stated skills into evidence: ' + esc(p.selfReportedSkills.join(" & ")) +
+        '</b><div class="mu">' + esc(p.bridging) + "</div></div></div>" +
+        '<div class="card"><h2>Work readiness notes</h2><div class="mu" style="margin-bottom:8px">For hiring managers and mentors</div>' +
+        p.readinessNotes.map(function (rn) { return '<div class="mu" style="margin:6px 0">◎ ' + esc(rn) + "</div>"; }).join("") + "</div>" +
+        '<div class="two-box s" style="margin-bottom:14px"><h2>Self-reported claims</h2><div class="mu" style="margin-bottom:10px">Stated by the candidate. Not checked, and not used to set any skill level.</div>' +
+        '<div class="grid2"><div><div class="mu" style="font-size:11px">LOCATION</div><b>' + esc(p.location) + '</b></div>' +
+        '<div><div class="mu" style="font-size:11px">LANGUAGES</div><b>' + esc(p.langs.join(", ")) + '</b></div>' +
+        '<div><div class="mu" style="font-size:11px">TARGET ROLE</div><b>' + esc(p.role) + '</b></div>' +
+        '<div><div class="mu" style="font-size:11px">EXPERIENCE</div><b>' + esc(p.exp) + '</b></div></div>' +
+        '<div style="margin-top:10px"><div class="mu" style="font-size:11px">BACKGROUND AND GOALS</div><div class="mu">' + esc(p.bio) + "</div></div>" +
+        '<div style="margin-top:10px"><div class="mu" style="font-size:11px">SKILLS MENTIONED WITHOUT SUPPORTING EVIDENCE</div>' +
+        p.selfReportedSkills.map(function (sk) { return '<span class="pill g">✎ ' + esc(sk) + "</span>"; }).join("") + "</div></div>" +
+        '<div class="card"><h2>Verification and trust breakdown</h2><div class="mu" style="margin-bottom:10px">Evidence score ' + p.score + " out of 100 · " + esc(p.levelLabel) + "</div>" +
+        p.breakdown.map(function (b) {
+          return '<div style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><b>' +
+            esc(b[0]) + '</b><b>' + esc(b[1]) + '</b></div><div class="bar" style="margin:4px 0"><i style="width:' + b[2] +
+            '%"></i></div><div class="mu" style="font-size:12px">' + esc(b[3]) + "</div></div>";
+        }).join("") +
+        (p.repoCard ? '<div class="card" style="background:var(--bg);margin-top:12px"><b>⌘ ' + esc(p.repoCard.name) +
+        '</b><div class="mu">' + esc(p.repoCard.desc) + '</div><div class="mu" style="font-size:12px;margin-top:6px">' +
+        esc(p.repoCard.stats) + '</div><div style="margin-top:6px"><a href="' + esc(p.repoCard.url) +
+        '" target="_blank" style="color:var(--ac);font-size:13px">↗ ' + esc(p.repoCard.url) + "</a></div></div>" : "") +
+        '<div class="two-box s" style="margin-top:12px"><div class="mu" style="margin-bottom:0"><b>What this does and does not confirm.</b> The analysis reads the candidate’s project descriptions and public repository contents. It does not confirm identity, authorship of a repository, or formal qualifications. Use it to decide who to interview, and ask about the evidence quoted above.</div></div>' +
+        '<div class="mu" style="font-size:11.5px;margin-top:12px">' + esc(p.code) + " · " + esc(shareUrl) + "</div></div>" +
+        '<div class="card no-print"><div class="row" style="justify-content:space-between"><h2>Share this passport</h2><span class="pill ' +
+        (isShared ? "" : "g") + '">' + (isShared ? "Public" : "🔒 Private") + "</span></div>" +
+        '<div class="mu" style="margin-bottom:12px">' + (isShared ? "Listed in Talent Explorer and shareable via link." : "Private: not listed in the Talent Explorer. Only people you send the link to can open it.") + "</div>" +
+        '<div class="grid2"><button class="pri" onclick="copyLink(\'' + esc(shareUrl) + '\')">🔗 Copy Shareable Link</button>' +
+        '<button onclick="window.print()">🖨 Print / Save as PDF</button>' +
+        '<button onclick="togglePublic(\'' + p.id + '\')">' + (isShared ? "🔒 Make private" : "◎ Make public") + '</button>' +
+        '<button class="gold" onclick="requestIntro(\'' + p.id + '\')">' + (requested ? "✓ Intro / Interview Requested" : "✈ Request Intro / Interview") + "</button></div>" +
+        '<div class="row" style="margin-top:12px"><button onclick="go(\'create\')">+ Create another passport</button>' +
+        '<button onclick="toggleShortlist(\'' + p.id + '\')">' + (inShort ? "✓ Saved in Shortlist" : "Add to Shortlist") + "</button></div></div>";
+    }
+
+    function copyLink(url) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).catch(function () {});
+      }
+      alert("Link copied: " + url);
+    }
+
+    function togglePublic(id) {
+      var p = PROFILES.find(function (x) { return x.id === id; });
+      if (p) { p.shared = p.shared === 1 ? 0 : 1; saveState(); render(); }
+    }
+
+    function vTalent() {
+      var skills = {}, roles = {}, langs = {}, locs = {};
+      PROFILES.forEach(function (p) {
+        roles[p.role] = 1;
+        locs[p.location] = 1;
+        p.langs.forEach(function (l) { langs[l] = 1; });
+        p.verifiedSkills.forEach(function (s) { skills[s[0]] = 1; });
+      });
+      var mk = function (map, cur, label) {
+        return '<option value="">' + esc(label) + "</option>" + Object.keys(map).sort().map(function (k) {
+          return '<option value="' + esc(k) + '"' + (k === cur ? " selected" : "") + ">" + esc(k) + "</option>";
+        }).join("");
+      };
+
+      var list = PROFILES.filter(function (p) {
+        var q = app.q.toLowerCase();
+        if (q && (p.name + " " + p.role + " " + p.location).toLowerCase().indexOf(q) === -1) return false;
+        if (app.skill && !p.verifiedSkills.some(function (s) { return s[0] === app.skill; })) return false;
+        if (app.role && p.role !== app.role) return false;
+        if (app.lang && p.langs.indexOf(app.lang) === -1) return false;
+        if (app.loc && p.location !== app.loc) return false;
+        if (p.score < app.minScore) return false;
+        return true;
+      });
+
+      return '<div class="card"><h1>Talent Explorer</h1><div class="mu" style="margin-bottom:12px">Find people by what they have shown they can do. Skill filters match verified skills only, never self-reported claims.</div>' +
+        '<input value="' + esc(app.q) + '" placeholder="🔍 Search name, skill, role or location" oninput="app.q=this.value;render()">' +
+        '<div class="grid2"><div><label>Verified skill</label><select onchange="app.skill=this.value;render()">' + mk(skills, app.skill, "Any skill") + "</select></div>" +
+        '<div><label>Target role</label><select onchange="app.role=this.value;render()">' + mk(roles, app.role, "Any role") + "</select></div>" +
+        '<div><label>Language</label><select onchange="app.lang=this.value;render()">' + mk(langs, app.lang, "Any language") + "</select></div>" +
+        '<div><label>Location</label><select onchange="app.loc=this.value;render()">' + mk(locs, app.loc, "Any location") + "</select></div></div>" +
+        '<label>Minimum Evidence Score: <span style="float:right">' + (app.minScore ? app.minScore + "+" : "Any") + '</span></label>' +
+        '<input type="range" min="0" max="95" step="5" value="' + app.minScore + '" oninput="app.minScore=+this.value;render()">' +
+        '<div style="margin-top:12px"><span class="pill">☰ Shortlist (' + app.shortlist.length + ")</span></div></div>" +
+        '<div class="mu" style="margin-bottom:10px">' + list.length + " profiles · sorted by evidence score</div>" +
+        '<div class="grid2">' + list.map(function (p) { return profileCard(p, true); }).join("") + "</div>";
+    }
+
+    render();
+  </script>
+</body>
+</html>
