@@ -1,0 +1,250 @@
+/*
+ * Tailwind v4 entry: config lives here, with no tailwind.config.js or PostCSS plugin.
+ * - Keep every @import in this top block, above @theme and the rest of the file. Install an
+ *   npm package before @importing its CSS. Never @import a remote URL (web fonts, CDN CSS): the
+ *   build resolves @import from the filesystem. Load those with a <link> in the head() of
+ *   src/routes/__root.tsx and name the family in a --font-* token in @theme inline below.
+ */
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The design lives in this file: oklch color tokens on the shadcn variables
+ * (--background, --foreground, --primary, --secondary, --muted, --accent, ...) plus
+ * new tokens as needed, font tokens, and custom styles and animations.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-verified: var(--verified);
+  --color-verified-soft: var(--verified-soft);
+  --color-claimed: var(--claimed);
+  --color-claimed-soft: var(--claimed-soft);
+  --color-cover: var(--cover);
+  --color-cover-foreground: var(--cover-foreground);
+  --color-cover-muted: var(--cover-muted);
+  --color-seal: var(--seal);
+  --color-seal-foreground: var(--seal-foreground);
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --shadow-passport: 0 1px 2px color-mix(in oklab, var(--cover) 8%, transparent),
+    0 18px 40px -18px color-mix(in oklab, var(--cover) 35%, transparent);
+}
+
+:root {
+  --radius: 0.75rem;
+  /* Paper and ink */
+  --background: oklch(0.974 0.012 88);
+  --foreground: oklch(0.23 0.03 215);
+  --card: oklch(0.995 0.004 88);
+  --card-foreground: oklch(0.23 0.03 215);
+  --popover: oklch(0.995 0.004 88);
+  --popover-foreground: oklch(0.23 0.03 215);
+  --primary: oklch(0.37 0.065 200);
+  --primary-foreground: oklch(0.985 0.008 88);
+  --secondary: oklch(0.935 0.022 195);
+  --secondary-foreground: oklch(0.3 0.06 200);
+  --muted: oklch(0.945 0.014 88);
+  --muted-foreground: oklch(0.44 0.025 215);
+  --accent: oklch(0.93 0.035 85);
+  --accent-foreground: oklch(0.23 0.03 215);
+  --destructive: oklch(0.5 0.19 27);
+  --destructive-foreground: oklch(0.985 0.008 88);
+  --border: oklch(0.885 0.018 88);
+  --input: oklch(0.82 0.02 88);
+  --ring: oklch(0.55 0.1 200);
+  /* Passport cover and its gold seal */
+  --cover: oklch(0.27 0.05 205);
+  --cover-foreground: oklch(0.965 0.015 88);
+  --cover-muted: oklch(0.82 0.03 195);
+  --seal: oklch(0.8 0.13 78);
+  --seal-foreground: oklch(0.26 0.05 60);
+  /* The two kinds of information, kept visually apart everywhere */
+  --verified: oklch(0.42 0.1 160);
+  --verified-soft: oklch(0.945 0.04 160);
+  --claimed: oklch(0.46 0.1 60);
+  --claimed-soft: oklch(0.955 0.045 82);
+  --chart-1: var(--primary);
+  --chart-2: var(--verified);
+  --chart-3: var(--seal);
+  --chart-4: var(--claimed);
+  --chart-5: var(--cover);
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Dark passport-cover surface with engraved rings, used for heroes and passport headers. */
+@utility cover-surface {
+  color: var(--cover-foreground);
+  background:
+    radial-gradient(110% 80% at 90% 0%, color-mix(in oklab, var(--seal) 20%, transparent), transparent 60%),
+    repeating-radial-gradient(
+      circle at 0% 100%,
+      transparent 0 15px,
+      color-mix(in oklab, var(--cover-foreground) 5%, transparent) 15px 16px
+    ),
+    linear-gradient(160deg, var(--cover), oklch(0.2 0.045 218));
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+@utility field {
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--input);
+  background: var(--card);
+  padding: 0.625rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  &::placeholder {
+    color: color-mix(in oklab, var(--muted-foreground) 70%, transparent);
+  }
+  &:focus {
+    outline: none;
+    border-color: var(--ring);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 25%, transparent);
+  }
+  &[aria-invalid="true"] {
+    border-color: var(--destructive);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-rise {
+  animation: rise 0.45s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-tight {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  .print-avoid-break {
+    break-inside: avoid;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+}
